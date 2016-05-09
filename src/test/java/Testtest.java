@@ -6,8 +6,9 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 
-public class Testtest extends TestSetup {
+public class TestTest extends TestSetup {
     private WebDriver driver;
 
     private boolean acceptNextAlert = true;
@@ -24,25 +25,27 @@ public class Testtest extends TestSetup {
     public void test2() throws Exception {
         driver.get(appURL);
         driver.findElement(By.linkText("Flights")).click();
-        //driver.findElement(By.name("Flying from")).clear();
-        //driver.findElement(By.name("Flying from")).sendKeys(fromFlightName);
-        //driver.findElement(By.name("Flying to")).clear();
-        //driver.findElement(By.name("Flying to")).sendKeys(toFlightName);
-        driver.findElement(By.xpath(".//*[text()='Flying from']/..")).clear();
-        driver.findElement(By.xpath(".//*[text()='Flying from']/..")).sendKeys(fromFlightName);
-        //driver.findElement(By.cssSelector("input[type=\"Flying from\"]")).sendKeys(fromFlightName);
-        //driver.findElement(By.linkText("Create new student")).click();
-        //driver.findElement(By.name("sName")).clear();
-        //driver.findElement(By.name("sName")).sendKeys("Anna");
-        //driver.findElement(By.name("sYear")).clear();
-        //driver.findElement(By.name("sYear")).sendKeys("3");
-        //driver.findElement(By.cssSelector("input[type=\"submit\"]")).click();
-        //assertTrue(driver.findElement(By.cssSelector("table")).getText().matches("^[\\s\\S]*Anna[\\s\\S]*$"));
-        //driver.findElement(By.xpath("(//input[@value='Show'])[5]")).click();
-        //assertTrue(driver.findElement(By.cssSelector("body")).getText().matches("^[\\s\\S]*Student = Anna[\\s\\S]*$"));
-        //driver.findElement(By.linkText("Delete")).click();
-        //assertThat("Anna", is(not(driver.findElement(By.cssSelector("table")).getText())));
-        //driver.findElement(By.linkText("Logout")).click();
+        if (oneWayDirection == true) {
+            driver.findElement(By.id("flight-type-one-way")).click();
+        } else {
+            driver.findElement(By.id("flight-type-roundtrip")).click();
+            driver.findElement(By.id("flight-returning")).clear();
+            driver.findElement(By.id("flight-returning")).sendKeys(flightReturning);
+        }
+        driver.findElement(By.id("flight-origin")).clear();
+        driver.findElement(By.id("flight-origin")).sendKeys(fromFlightName);
+        driver.findElement(By.id("flight-destination")).clear();
+        driver.findElement(By.id("flight-destination")).sendKeys(toFlightName);
+        driver.findElement(By.id("flight-departing")).clear();
+        driver.findElement(By.id("flight-departing")).sendKeys(flightDeparting);
+        Select adultsDropdown = new Select(driver.findElement(By.id("flight-adults")));
+        adultsDropdown.selectByVisibleText(numberOfAdults);
+        Select childrenDropdown = new Select(driver.findElement(By.id("flight-children")));
+        childrenDropdown.selectByVisibleText(numberOfChildren);
+        driver.findElement(By.linkText("Advanced options")).click();
+        Select preferredClassDropdown = new Select(driver.findElement(By.id("flight-advanced-preferred-class")));
+        preferredClassDropdown.selectByVisibleText(valueOfPreferredClass);
+        driver.findElement(By.id("search-button")).click();
     }
 
     @After
